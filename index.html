@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Birthday Surprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#efdee4",
+                        "on-background": "#22191d",
+                        "secondary-container": "#e5deff",
+                        "outline": "#7f7479",
+                        "surface": "#fff8f8",
+                        "secondary-fixed-dim": "#c9c2e2",
+                        "secondary": "#5f5b76",
+                        "on-primary-container": "#755c6a",
+                        "on-surface-variant": "#4d4449",
+                        "surface-variant": "#efdee4",
+                        "tertiary-container": "#e0e0e0",
+                        "surface-tint": "#705765",
+                        "on-secondary": "#ffffff",
+                        "background": "#fff8f8",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "secondary-fixed": "#e5deff",
+                        "inverse-primary": "#ddbece",
+                        "outline-variant": "#d0c3c8",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#e7d6dc",
+                        "tertiary": "#5d5f5f",
+                        "inverse-on-surface": "#feecf3",
+                        "primary-container": "#f8d7e8",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "surface-container-high": "#f5e4ea",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#48435e",
+                        "on-secondary-fixed": "#1c1830",
+                        "on-primary-fixed-variant": "#57404d",
+                        "primary": "#705765",
+                        "on-primary-fixed": "#281621",
+                        "primary-fixed": "#fbdaeb",
+                        "surface-container-low": "#fff0f5",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "primary-fixed-dim": "#ddbece",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#382e32",
+                        "surface-container": "#fbe9f0",
+                        "on-error": "#ffffff",
+                        "on-surface": "#22191d",
+                        "on-secondary-container": "#66617d",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#616363",
+                        "surface-bright": "#fff8f8",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding-desktop": "64px",
+                        "container-padding-mobile": "24px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-md": "24px",
+                        "stack-lg": "48px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "label-caps": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(210, 180, 200, 0.2);
+        }
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            100% { left: 200%; }
+        }
+
+        .gift-box {
+            transition: transform 0.5s ease;
+        }
+        .gift-box.open {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Confetti Canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-x-hidden font-body-md antialiased selection:bg-primary-container selection:text-primary">
+<!-- Background Animation -->
+<div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none opacity-50">
+<!-- STITCH_SHADER_START:ANIMATION_1 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_1" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_1');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    
+    // Create a soft, moving gradient of pink and lavender
+    vec3 color1 = vec3(0.98, 0.92, 0.96); // Soft Pink
+    vec3 color2 = vec3(0.94, 0.94, 0.98); // Soft Lavender
+    vec3 color3 = vec3(1.0, 1.0, 1.0);    // White
+    
+    float noise = sin(uv.x * 3.0 + u_time * 0.5) * cos(uv.y * 2.0 + u_time * 0.3) * 0.5 + 0.5;
+    vec3 finalColor = mix(color1, color2, noise);
+    finalColor = mix(finalColor, color3, sin(u_time * 0.2) * 0.1 + 0.1);
+    
+    // Add very subtle "sparkle" dots
+    float sparkle = pow(fract(sin(dot(uv + u_time * 0.01, vec2(12.9898, 78.233))) * 43758.5453), 20.0);
+    finalColor += sparkle * 0.3;
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_1 -->
+<!-- Soft gradient fallback -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface to-surface-container-high mix-blend-overlay"></div>
+</div>
+<!-- TopNavBar (Hidden on entry, revealed later) -->
+<nav class="fixed top-0 w-full z-50 transition-all duration-500 ease-out opacity-0 -translate-y-full border-b border-white/40 shadow-[0_20px_40px_rgba(210,180,200,0.2)] bg-surface/70 backdrop-blur-xl dark:bg-surface-dim/70" id="top-nav">
+<div class="flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-4 max-w-7xl mx-auto">
+<span class="font-headline-lg-mobile md:font-headline-lg text-primary italic">TechBeyondCode</span>
+<div class="hidden md:flex gap-gutter">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="#memories">Our Story</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="#wishes">Memories</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="#special">Wishes</a>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-caps text-label-caps shadow-sm">Unlock Gift</button>
+</div>
+</nav>
+<!-- Main Content Container -->
+<main class="w-full max-w-7xl mx-auto px-container-padding-mobile md:px-container-padding-desktop relative z-10">
+<!-- 1. Section: Initial Entry -->
+<section class="min-h-screen flex flex-col justify-center items-center py-stack-lg transition-opacity duration-1000" id="entry-section">
+<div class="glass-card rounded-2xl p-8 md:p-12 max-w-md w-full text-center flex flex-col items-center gap-stack-md relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-fixed rounded-full mix-blend-multiply filter blur-2xl opacity-70"></div>
+<h1 class="font-headline-xl text-primary text-center mb-2">Let’s create a little surprise ✨</h1>
+<p class="font-body-md text-on-surface-variant mb-6 text-center">Enter your details to unlock the magic.</p>
+<div class="w-full flex flex-col gap-stack-sm text-left">
+<label class="font-label-caps text-label-caps text-primary ml-2" for="userName">Your Name</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 font-body-md text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner" id="userName" placeholder="e.g. Iniya Bharathi" type="text"/>
+</div>
+<div class="w-full flex flex-col gap-stack-sm text-left">
+<label class="font-label-caps text-label-caps text-primary ml-2" for="userDOB">Birthday</label>
+<input class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 font-body-md text-on-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-inner text-on-surface-variant" id="userDOB" type="date"/>
+</div>
+<button class="mt-4 w-full bg-gradient-to-r from-primary to-secondary text-on-primary py-4 rounded-full font-label-caps text-label-caps tracking-wider shadow-[0_10px_20px_rgba(112,87,101,0.3)] hover:shadow-[0_15px_30px_rgba(112,87,101,0.4)] transition-all transform hover:-translate-y-1 relative overflow-hidden group" id="enter-btn">
+<span class="relative z-10 flex items-center justify-center gap-2">Enter the Surprise 🎁</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+</div>
+</section>
+<!-- Hidden Sections Container -->
+<div class="hidden" id="surprise-content">
+<!-- 2. Section: Birthday Reveal -->
+<section class="min-h-screen flex flex-col justify-center items-center py-stack-lg relative pt-32" id="reveal-section">
+<div class="reveal-element glass-card rounded-[2rem] p-8 md:p-16 max-w-2xl w-full text-center flex flex-col items-center gap-stack-md shimmer">
+<h2 class="font-headline-xl text-primary mb-4 leading-tight">Hey, <span class="dynamic-name text-secondary italic">Beautiful</span>! ❤️</h2>
+<div class="floating my-8">
+<span class="material-symbols-outlined text-[100px] text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">cake</span>
+</div>
+<p class="font-body-md md:font-body-md text-on-surface-variant max-w-lg mx-auto mb-8 text-center text-lg leading-relaxed">
+                        Wishing you a day filled with love, laughter, and everything your heart desires. You bring so much joy into the world, today we celebrate YOU.
+                    </p>
+<button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-full font-label-caps text-label-caps border border-white/50 hover:bg-inverse-primary transition-colors shadow-sm flex items-center gap-2" id="wish-btn">
+                        Make a Wish ✨
+                    </button>
+<div class="hidden mt-6 p-6 bg-surface-container-high rounded-xl border border-primary/20" id="hidden-message">
+<p class="font-headline-lg-mobile text-primary italic">May all your dreams come true! 🌟</p>
+</div>
+</div>
+</section>
+<!-- 3. Section: Memory Lane -->
+<
+<!-- 4. Section: Why You Are Special -->
+<section class="py-stack-lg md:py-[100px]" id="special">
+<div class="text-center mb-stack-lg reveal-element">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-primary mb-2">Things That Make You Special ❤️</h2>
+<p class="font-body-md text-on-surface-variant">Just a few reasons why you are amazing.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+<div class="reveal-element glass-card p-8 rounded-2xl flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">sentiment_satisfied</span>
+</div>
+<div>
+<h3 class="font-headline-lg-mobile text-xl text-on-background mb-2">Your Smile</h3>
+<p class="font-body-sm text-on-surface-variant">It truly lights up any room you walk into.</p>
+</div>
+</div>
+<div class="reveal-element glass-card p-8 rounded-2xl flex items-start gap-4 delay-100">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</div>
+<div>
+<h3 class="font-headline-lg-mobile text-xl text-on-background mb-2">Your Kindness</h3>
+<p class="font-body-sm text-on-surface-variant">A heart of gold that cares for everyone around.</p>
+</div>
+</div>
+<div class="reveal-element glass-card p-8 rounded-2xl flex items-start gap-4 delay-200">
+<div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary">star</span>
+</div>
+<div>
+<h3 class="font-headline-lg-mobile text-xl text-on-background mb-2">Your Crazy Side</h3>
+<p class="font-body-sm text-on-surface-variant">The fun, spontaneous energy that keeps life exciting.</p>
+</div>
+</div>
+<div class="reveal-element glass-card p-8 rounded-2xl flex items-start gap-4 delay-300">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error">auto_awesome</span>
+</div>
+<div>
+<h3 class="font-headline-lg-mobile text-xl text-on-background mb-2">Your Happiness</h3>
+<p class="font-body-sm text-on-surface-variant">Infectious joy that makes the world a better place.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Section: Final Surprise -->
+<section class="min-h-screen flex flex-col justify-center items-center py-stack-lg text-center relative" id="final-surprise">
+<div class="reveal-element max-w-md w-full flex flex-col items-center">
+<h2 class="font-headline-xl text-primary mb-8">One Last Surprise... 🎁</h2>
+<div class="gift-box glass-card w-48 h-48 rounded-2xl flex items-center justify-center mb-8 cursor-pointer shadow-lg hover:shadow-xl border-2 border-primary-container relative overflow-hidden" id="gift-container">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container to-surface opacity-50"></div>
+<span class="material-symbols-outlined text-[80px] text-primary relative z-10" style="font-variation-settings: 'FILL' 1;">featured_seasonal_and_gifts</span>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-full font-label-caps text-label-caps tracking-wide hover:bg-on-primary-fixed-variant transition-colors shadow-md" id="open-gift-btn">
+                        Open It ❤️
+                    </button>
+<div class="hidden mt-8 p-8 glass-card rounded-2xl border border-white/50 w-full" id="final-wish">
+<h3 class="font-headline-lg-mobile md:font-headline-lg text-secondary italic mb-4">Happy Birthday, <span class="dynamic-name">Love</span>!</h3>
+<p class="font-body-md text-on-surface-variant">Thank you for being you. Here is to another year of amazing adventures together.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-lg bg-transparent hidden opacity-0 transition-opacity duration-1000" id="main-footer">
+<div class="flex flex-col items-center gap-stack-md w-full px-container-padding-mobile md:px-container-padding-desktop max-w-7xl mx-auto">
+<span class="font-headline-lg-mobile md:font-headline-lg text-primary">TechBeyondCode</span>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:opacity-70 transition-opacity font-body-sm text-body-sm" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:opacity-70 transition-opacity font-body-sm text-body-sm" href="#">Send Love</a>
+<a class="text-on-surface-variant hover:opacity-70 transition-opacity font-body-sm text-body-sm" href="#">Share</a>
+</div>
+<p class="font-body-sm text-body-sm text-secondary dark:text-secondary-fixed-dim text-center">Made with love for your special day • 2026</p>
+</div>
+</footer>
+<!-- Canvas for Confetti -->
+<canvas id="confetti-canvas"></canvas>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const enterBtn = document.getElementById('enter-btn');
+            const nameInput = document.getElementById('userName');
+            const entrySection = document.getElementById('entry-section');
+            const surpriseContent = document.getElementById('surprise-content');
+            const topNav = document.getElementById('top-nav');
+            const dynamicNames = document.querySelectorAll('.dynamic-name');
+            const footer = document.getElementById('main-footer');
+
+            // --- Entry Logic ---
+            enterBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim() || 'Beautiful';
+                
+                // Update names
+                dynamicNames.forEach(el => el.textContent = name);
+
+                // Fade out entry
+                entrySection.style.opacity = '0';
+                
+                setTimeout(() => {
+                    entrySection.style.display = 'none';
+                    surpriseContent.classList.remove('hidden');
+                    footer.classList.remove('hidden');
+                    
+                    // Show Nav
+                    topNav.classList.remove('opacity-0', '-translate-y-full');
+                    topNav.classList.add('opacity-100', 'translate-y-0');
+                    
+                    // Fade in footer
+                    setTimeout(() => footer.classList.add('opacity-100'), 100);
+
+                    // Re-init observers for newly revealed content
+                    initObservers();
+                    
+                    // Scroll to top of reveal
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1000);
+            });
+
+            // --- Scroll Reveal Observer ---
+            function initObservers() {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.15
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target); // Run once
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal-element').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            // --- Interactions ---
+            
+            // Make a wish
+            const wishBtn = document.getElementById('wish-btn');
+            const hiddenMessage = document.getElementById('hidden-message');
+            wishBtn.addEventListener('click', () => {
+                fireConfetti();
+                wishBtn.style.display = 'none';
+                hiddenMessage.classList.remove('hidden');
+                hiddenMessage.classList.add('fade-in');
+            });
+
+            // Open Gift
+            const openBtn = document.getElementById('open-gift-btn');
+            const giftContainer = document.getElementById('gift-container');
+            const finalWish = document.getElementById('final-wish');
+            
+            const openGiftAction = () => {
+                giftContainer.classList.add('open');
+                fireConfetti();
+                openBtn.style.display = 'none';
+                finalWish.classList.remove('hidden');
+                finalWish.style.animation = 'fadeInUp 0.8s ease forwards';
+            };
+
+            openBtn.addEventListener('click', openGiftAction);
+            giftContainer.addEventListener('click', openGiftAction);
+
+            // --- Simple Confetti Implementation (Vanilla JS) ---
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+            const colors = ['#f8d7e8', '#e5deff', '#fbdaeb', '#705765']; // Theme colors
+
+            function fireConfetti() {
+                for (let i = 0; i < 100; i++) {
+                    particles.push({
+                        x: canvas.width / 2,
+                        y: canvas.height / 2,
+                        r: Math.random() * 6 + 2,
+                        dx: Math.random() * 10 - 5,
+                        dy: Math.random() * -10 - 5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        tilt: Math.floor(Math.random() * 10) - 10,
+                        tiltAngleIncrement: (Math.random() * 0.07) + 0.05,
+                        tiltAngle: 0
+                    });
+                }
+                if(particles.length <= 100) animateConfetti();
+            }
+
+            function animateConfetti() {
+                requestAnimationFrame(animateConfetti);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach((p, index) => {
+                    p.tiltAngle += p.tiltAngleIncrement;
+                    p.y += (Math.cos(p.tiltAngle) + 1 + p.r / 2) / 2;
+                    p.x += Math.sin(p.tiltAngle) * 2;
+                    p.dy += 0.1; // gravity
+                    p.x += p.dx;
+                    p.y += p.dy;
+
+                    ctx.beginPath();
+                    ctx.lineWidth = p.r;
+                    ctx.strokeStyle = p.color;
+                    ctx.moveTo(p.x + p.tilt + p.r, p.y);
+                    ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r);
+                    ctx.stroke();
+
+                    // Remove particles that fall off screen
+                    if (p.y > canvas.height) {
+                        particles.splice(index, 1);
+                    }
+                });
+            }
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+<style>
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+    </style>
+</body></html>
